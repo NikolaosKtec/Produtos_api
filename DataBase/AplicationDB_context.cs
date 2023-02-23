@@ -1,7 +1,8 @@
 ﻿using Flunt.Notifications;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
 using Produtos_api.Domain.Products;
 /*using System.Security.AccessControl;
 using Flunt.Notifications;
@@ -12,20 +13,23 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Produtos_api.DataBase;
 
-public class DB_context : DbContext
+public class AplicationDB_context : IdentityDbContext<IdentityUser>
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
 
     protected readonly IConfiguration Configuration;
 
-    public DB_context(DbContextOptions<DB_context> options, IConfiguration configuration) : base(options)
+    public AplicationDB_context(DbContextOptions<AplicationDB_context> options, IConfiguration configuration) : base(options)
     {
         Configuration = configuration;
     }
 
     // TODO configurações especifícas
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Ignore<Notification>();
 
         var product = modelBuilder.Entity<Product>();

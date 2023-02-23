@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Produtos_api.DataBase;
@@ -10,10 +11,12 @@ using Produtos_api.DataBase;
 
 namespace Produtosapi.Migrations
 {
-    [DbContext(typeof(DB_context))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AplicationDB_context))]
+    [Migration("20230216135122_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,6 +48,9 @@ namespace Produtosapi.Migrations
 
                     b.Property<DateTime>("EditedOn")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("disabled")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("is_active")
                         .HasColumnType("boolean");

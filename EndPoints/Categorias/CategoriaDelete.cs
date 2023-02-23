@@ -12,16 +12,21 @@ class CategoriaDelete
     public static IResult Action([FromRoute]int id,CategoryService service)
     {
         
-        Category categoria =  service.Get(id);
+        Category? categoria =  service.Get(id);
 
         if(categoria is null){
             return Results.NoContent();
         }
-        //todo gatilho pode ser útil aqui
-        //categoria.set_active(false);
-        service.Update(categoria);
+        // gatilho pode ser útil aqui
+
+        categoria.set_invalidate();
+        bool is_ok  = service.safe_delete(categoria);
+
+        if (!is_ok) {
+            return Results.Problem("Tente novamente! ,essa categoria não foi foi desabilitada!");
+        }
         
-        service.inactivate_childs(categoria);// todo aparenemente feito
+       // service.inactivate_childs(categoria);// todo aparenemente feito
         return Results.Ok("Este agora encontra-se Inativo!");
     }
 }

@@ -21,6 +21,8 @@ public class Category : Entity
 
     public bool is_active { get; private set; }
 
+    public bool disabled { get; private set; } = false;
+
     public void define (string name, bool conv)//(string name , bool is_active)
     {
         
@@ -42,6 +44,11 @@ public class Category : Entity
             is_active = !is_active;
 
        // Validate(this.name);
+    }
+
+    public void set_invalidate()
+    {
+        disabled = !disabled;
     }
 
     private void Validate(string name)

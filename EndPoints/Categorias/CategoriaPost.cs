@@ -1,9 +1,8 @@
-using Produtos_api.Domain.Dto;
 using Produtos_api.Domain.Products;
 using Produtos_api.Service;
 
 namespace Produtos_api.EndPoints.Categorias;
-class CategoriaPost
+class CategotiaPost
 {
     public static string Template => "/categorias";
     public static string[] Methods => new string[] {HttpMethod.Post.ToString() };
@@ -21,7 +20,7 @@ class CategoriaPost
        }
 
         service.Save(categoria);
-        return Results.Created("ok",(categoriaDto.Name, categoriaDto.set_activity));
+        return Results.Created($"/categorias/{categoriaDto.Id}",categoriaDto.Name);
     }
     
 }

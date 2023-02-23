@@ -20,6 +20,7 @@ namespace Produtosapi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     isactive = table.Column<bool>(name: "is_active", type: "boolean", nullable: false),
+                    disabled = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EditedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),

@@ -1,4 +1,4 @@
-﻿namespace Produtos_api.Domain.Dto
+﻿namespace Produtos_api.EndPoints.Categorias
 {
     public class CategoryDto
     {

@@ -15,10 +15,7 @@ public static class Errors_generic
     }
 
 
-
-
-
-    public static Dictionary<string, string[]> show_errors_identity(this IEnumerable<IdentityError> errors)
+    public static Dictionary<string, string[]> convertToProblemsDetails(this IEnumerable<IdentityError> errors)
     {
         return errors.GroupBy(g => g.Code)
             .ToDictionary(g => g.Key, g

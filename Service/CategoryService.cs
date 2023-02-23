@@ -1,6 +1,6 @@
 ﻿using Produtos_api.DataBase;
-using Produtos_api.Domain.Dto;
 using Produtos_api.Domain.Products;
+using Produtos_api.EndPoints.Categorias;
 //  partial interface IContext_service
 // {
 //     public abstract void Save(Categoria param);
@@ -15,9 +15,9 @@ namespace Produtos_api.Service;
 
 class CategoryService //: IContext_service
 {
-    public CategoryService(DB_context context) => Context = context;
+    public CategoryService(AplicationDB_context context) => Context = context;
 
-    private readonly DB_context Context;
+    private readonly AplicationDB_context Context;
 
     public int inactivate_childs(Category categoria)//todo verificar metodo
     {
@@ -45,7 +45,7 @@ class CategoryService //: IContext_service
         return 1;
     }
 
-    public Category Get(int param)
+    public Category? Get(int param)
     {
         return Context.Categories.Find(param);
     }
@@ -53,12 +53,15 @@ class CategoryService //: IContext_service
     public IQueryable<CategoryDto> GetAll()
     {
 
-        return Context.Categories.Select(c => new CategoryDto
-        {
-            set_activity = c.is_active,
-            Id = c.Id,
-            Name = c.name,
-        });
+        return Context.Categories.Where(c => c.disabled == false)
+            .Select(c => new CategoryDto
+            {
+                set_activity = c.is_active,
+                Name = c.name,
+                Id = c.Id,
+            }
+            );
+          
     }
 
     public void Save(Category param)
@@ -71,5 +74,17 @@ class CategoryService //: IContext_service
     {
         Context.Categories.Update(param);
         Context.SaveChanges();
+    }
+
+    public bool safe_delete(Category param)
+    {   
+        if(param.disabled) {
+            Context.Categories.Update(param);
+            Context.SaveChanges();
+            return true;
+        }
+
+        return false;
+        
     }
 }
