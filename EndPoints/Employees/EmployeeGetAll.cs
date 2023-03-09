@@ -8,10 +8,14 @@ public class EmployeeGetAll
     public static string Template => "/employees";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
-    public static IResult Action(UserManager<IdentityUser> userManager,EmployeeService employeeService)
+    public static IResult Action(int page,UserManager<IdentityUser> userManager,EmployeeService employeeService)
     {
+       if (page < 1)
+        {
+            return Results.BadRequest("Err! page nao pode ser negativo!");
+        }
 
-        List<EmployeeDto> users = employeeService.GetAll();
+        List<EmployeeDto> users = employeeService.GetAll_dapper(page);
 
         return Results.Ok(users);
     }
