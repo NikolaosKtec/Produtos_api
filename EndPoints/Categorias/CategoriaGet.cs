@@ -1,7 +1,7 @@
 
 
 using Produtos_api.Domain.Products;
-using Produtos_api.Service;
+using Produtos_api.Service.Category;
 
 namespace Produtos_api.EndPoints.Categorias;
 

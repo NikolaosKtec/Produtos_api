@@ -3,9 +3,9 @@ using Produtos_api.Domain.Generic;
 
 namespace Produtos_api.Domain.Products;
 
-public class Category : Entity
+public class CategoryDomain : Entity
 {
-    public Category(string name) {
+    public CategoryDomain(string name) {
         Validate(name);
 
         this.name = name;
@@ -54,7 +54,7 @@ public class Category : Entity
     private void Validate(string name)
     {
         //validation flunt
-        var contract = new Contract<Category>()
+        var contract = new Contract<CategoryDomain>()
             .IsNotNullOrEmpty(name, "Name")
             .IsGreaterOrEqualsThan(name, 3, "Name");
         AddNotifications(contract);

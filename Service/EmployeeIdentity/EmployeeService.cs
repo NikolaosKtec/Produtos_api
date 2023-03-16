@@ -4,7 +4,7 @@ using Npgsql;
 using Produtos_api.EndPoints.Employees;
 using System.Security.Claims;
 
-namespace Produtos_api.Service;
+namespace Produtos_api.Service.EmployeeIdentity;
 
 public class EmployeeService
 {
@@ -51,30 +51,6 @@ public class EmployeeService
         return null;
     }
 
-    /*public List<EmployeeDto> GetAll(int page) // depreciado
-    {
-        const int ROWS = 10;
-
-        var identityUsers = _userManager.Users.Skip((page-1)* ROWS).Take(ROWS).ToList();
-        List <EmployeeDto> users = new List<EmployeeDto>();
-
-        identityUsers.ForEach((user) =>
-        {
-            var claims = _userManager.GetClaimsAsync(user).Result;
-
-            Claim? userNameClaim = claims.FirstOrDefault(c => c.Type == "name_user");
-            string userName = userNameClaim is null? string.Empty: userNameClaim.Value;
-
-            Claim? codeClaim = claims.FirstOrDefault(c => c.Type == "employee_code");
-            string code = codeClaim is null ? string.Empty : codeClaim.Value;
-
-            var dto = new EmployeeDto(userName, user.Email, code);
-            users.Add(dto);
-        });
-
-        return users;
-    }*/
-
     public List<EmployeeDto> GetAll_dapper(int page)
     {
         const int ROWS = 10;
@@ -91,5 +67,15 @@ public class EmployeeService
             new { page, ROWS }
         );
         return employee.ToList();
+    }
+
+    public IdentityUser find_user_by_email(string email)
+    {
+        return _userManager.FindByEmailAsync(email).Result;
+    }
+
+    public bool check_password(IdentityUser user, string password)
+    {
+       return  _userManager.CheckPasswordAsync(user, password).Result;
     }
 }

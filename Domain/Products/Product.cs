@@ -9,7 +9,7 @@ public class Product : Entity
 
     public int CategoryId { get; private set; }
 
-    public Category Category { get; private set; }
+    public CategoryDomain Category { get; private set; }
 
     public string Description { get; private set; }
 

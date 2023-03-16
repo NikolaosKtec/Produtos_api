@@ -1,9 +1,11 @@
 
 using Microsoft.AspNetCore.Identity;
 using Produtos_api.DataBase;
+using Produtos_api.EndPoints.Authentication;
 using Produtos_api.EndPoints.Categorias;
 using Produtos_api.EndPoints.Employees;
-using Produtos_api.Service;
+using Produtos_api.Service.Category;
+using Produtos_api.Service.EmployeeIdentity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -38,4 +40,7 @@ app.MapMethods(CategoriaDelete.Template, CategoriaDelete.Methods, CategoriaDelet
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
+
+app.MapMethods(Login.Template, Login.Methods, Login.Handle);
+
 app.Run();

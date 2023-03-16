@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
-using Produtos_api.Service;
 
+using Produtos_api.Service.EmployeeIdentity;
 
 namespace Produtos_api.EndPoints.Employees;
 class EmployeePost

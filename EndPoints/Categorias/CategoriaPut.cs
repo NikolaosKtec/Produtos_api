@@ -2,7 +2,7 @@
 using Flunt.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Produtos_api.Domain.Products;
-using Produtos_api.Service;
+using Produtos_api.Service.Category;
 
 namespace Produtos_api.EndPoints.Categorias;
 
@@ -13,7 +13,7 @@ class CategoriaPut
     public static Delegate Handle => Action;
     static IResult Action([FromRoute]int id,CategoryDto categoriaDto,CategoryService service)
     {
-        Category categoria = service.Get(id);
+        CategoryDomain categoria = service.Get(id);
         
 
         if (categoria is null)

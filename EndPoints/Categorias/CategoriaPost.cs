@@ -1,5 +1,5 @@
 using Produtos_api.Domain.Products;
-using Produtos_api.Service;
+using Produtos_api.Service.Category;
 
 namespace Produtos_api.EndPoints.Categorias;
 class CategotiaPost
@@ -10,7 +10,7 @@ class CategotiaPost
     public static IResult Action(CategoryDto categoriaDto, CategoryService service)
     {
 
-        Category categoria = new Category(categoriaDto.Name);
+        CategoryDomain categoria = new CategoryDomain(categoriaDto.Name);
         
         
         
