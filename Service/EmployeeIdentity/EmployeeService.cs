@@ -13,8 +13,7 @@ public class EmployeeService
 
         _db = new NpgsqlConnection(
             Environment.GetEnvironmentVariable(
-                configuration.
-                GetConnectionString("PostgreSql")));
+                configuration["ConnectionStrings:PostgreSql"]));
 
         _userManager = userManager;
     }

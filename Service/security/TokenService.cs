@@ -7,7 +7,8 @@ namespace Produtos_api.Service.security;
 
 public class TokenService
 {
-    public TokenService(string email) {
+    public TokenService(string email, IConfiguration configuration) {
+
 
 
         tokenDescriptor = new SecurityTokenDescriptor
@@ -18,26 +19,28 @@ public class TokenService
             }),
 
             SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(_key),
+                 new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(
+                        Environment.GetEnvironmentVariable(
+                            configuration["JwtBearerTokenSettings:Secret_key"]))
+
+                    ),
                 SecurityAlgorithms.HmacSha256Signature
             ),
-            Audience = "Produtos_api",
-            Issuer = "Issuer",
+            Audience = configuration["JwtBearerTokenSettings:Audience"],
+            Issuer = configuration["JwtBearerTokenSettings:Issuer"],
         };
-
-
+ 
     }
 
+   
     private SecurityTokenDescriptor tokenDescriptor { get; }
-
-    private byte[] _key = Encoding.ASCII.GetBytes("Fa65GA0@564BtgTe.");
 
     private JwtSecurityTokenHandler _tokenHandler = new();
 
     public SecurityToken create_token()
     {
         
-
         return _tokenHandler.CreateToken(tokenDescriptor);
     }
 

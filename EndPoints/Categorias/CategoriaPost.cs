@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Produtos_api.Domain.Products;
 using Produtos_api.Service.Category;
 
@@ -7,6 +8,7 @@ class CategotiaPost
     public static string Template => "/categorias";
     public static string[] Methods => new string[] {HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
+    [Authorize]
     public static IResult Action(CategoryDto categoriaDto, CategoryService service)
     {
 
@@ -20,7 +22,7 @@ class CategotiaPost
        }
 
         service.Save(categoria);
-        return Results.Created($"/categorias/{categoriaDto.Id}",categoriaDto.Name);
+        return Results.Created($"/categorias/{categoriaDto.Name}",categoriaDto.Name);
     }
     
 }

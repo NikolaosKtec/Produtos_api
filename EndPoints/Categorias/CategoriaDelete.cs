@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Produtos_api.Domain.Products;
 using Produtos_api.Service.Category;
@@ -9,6 +10,7 @@ class CategoriaDelete
     public static string Template => "/categorias/{id:int}";
     public static string[] Methods => new string[] {HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
+    [Authorize]
     public static IResult Action([FromRoute]int id,CategoryService service)
     {
         

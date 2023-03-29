@@ -4,12 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using Produtos_api.Domain.Products;
-/*using System.Security.AccessControl;
-using Flunt.Notifications;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-*/
 
 namespace Produtos_api.DataBase;
 
@@ -56,59 +51,10 @@ public class AplicationDB_context : IdentityDbContext<IdentityUser>
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseNpgsql(Environment
-            .GetEnvironmentVariable(Configuration.GetConnectionString("PostgreSql")));
+            .GetEnvironmentVariable(Configuration["ConnectionStrings:PostgreSql"]) );
         options.UseNpgsql().EnableSensitiveDataLogging();
 
 
 
     }
 }
-
-
-
-/*
-class Context_app : IdentityDbContext<IdentityUser>
-{
-
-    public DbSet<Produto> Produto { get; set; }
-    public DbSet<Categoria> Categoria { get; set; }
-
-    protected readonly IConfiguration Configuration;
-
-    public Context_app(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.Ignore<Notification>();
-        modelBuilder.Entity<Produto>()
-            .HasOne<Categoria>()
-            .WithOne()
-            .HasForeignKey<Produto>(p => p.CategoriaId)
-            .OnDelete(deleteBehavior: DeleteBehavior.SetNull);
-        //todo aparentemente deu certo 
-    }
-    // protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-    // {
-    //     base.ConfigureConventions(configurationBuilder);
-    //     configurationBuilder.
-    // }
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-
-
-        options.UseNpgsql(Environment
-            .GetEnvironmentVariable(Configuration.GetConnectionString("PostgreSql")));
-        options.UseNpgsql().EnableSensitiveDataLogging();
-
-
-
-    }
-
-
-
-}
-*/

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 using Produtos_api.Service.EmployeeIdentity;
@@ -8,6 +9,7 @@ class EmployeePost
     public static string Template => "/employees";
     public static string[] Methods => new string[] {HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
+    [Authorize]
     public static IResult Action(EmployeeRequest employeeRequest, UserManager<IdentityUser> userManager, EmployeeService employeeService)
     {
 

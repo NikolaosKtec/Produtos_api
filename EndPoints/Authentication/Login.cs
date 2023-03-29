@@ -13,7 +13,7 @@ public class Login
     public static Delegate Handle => Action;
 
 
-    public static IResult Action(UserDto userDto,EmployeeService employeeService )
+    public static IResult Action(UserDto userDto,EmployeeService employeeService, IConfiguration configuration)
     {
        
         var user = employeeService.find_user_by_email(userDto.Email);
@@ -25,7 +25,7 @@ public class Login
             return Results.BadRequest();
 
         //if user exist and password ok
-        var token_provider = new TokenService(userDto.Email);
+        var token_provider = new TokenService(userDto.Email,configuration);
 
         SecurityToken token = token_provider.create_token();
 

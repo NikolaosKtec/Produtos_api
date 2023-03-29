@@ -55,12 +55,7 @@ class CategoryService //: IContext_service
     {
 
         return Context.Categories.Where(c => c.disabled == false)
-            .Select(c => new CategoryDto
-            {
-                set_activity = c.is_active,
-                Name = c.name,
-                Id = c.Id,
-            }
+            .Select(c => new CategoryDto(c.name,c.IsValid)
             );
 
     }

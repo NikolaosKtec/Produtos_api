@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Authorization;
 using Produtos_api.Domain.Products;
 using Produtos_api.Service.Category;
 
@@ -10,6 +11,7 @@ class CategoriaGet
     public static string Template => "/categorias";
     public static string[] Methods => new string[] {HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
+    
     public static IResult Action(CategoryService categoryService)
     {
         

@@ -1,11 +1,3 @@
-﻿namespace Produtos_api.EndPoints.Categorias
-{
-    public class CategoryDto
-    {
-        public string Name { get; set; }
+﻿namespace Produtos_api.EndPoints.Categorias;
 
-        public bool set_activity { get; set; }
-
-        public int? Id { get; set; }
-    }
-}
+public record CategoryDto(string Name, bool set_activity);
