@@ -1,7 +1,8 @@
 ﻿using Produtos_api.DataBase;
 using Produtos_api.Domain.Products;
+using Produtos_api.EndPoints.Categorias.dto;
 
-using Produtos_api.EndPoints.Categorias;
+
 //  partial interface IContext_service
 // {
 //     public abstract void Save(Categoria param);
@@ -10,7 +11,7 @@ using Produtos_api.EndPoints.Categorias;
 //     public abstract int Delete(int param);
 // }
 
-namespace Produtos_api.Service.Category;
+namespace Produtos_api.Service.Category_service;
 
 
 
@@ -20,7 +21,7 @@ class CategoryService //: IContext_service
 
     private readonly AplicationDB_context Context;
 
-    public int inactivate_childs(CategoryDomain categoria)//todo verificar metodo
+    public int inactivate_childs(Category categoria)//todo verificar metodo
     {
 
         //
@@ -36,7 +37,7 @@ class CategoryService //: IContext_service
     }
     public int Delete(int param)//todo verificar metodo
     {
-        CategoryDomain categoria = Get(param);
+        Category? categoria = Get(param);
 
         if (categoria is null)
             return 0;
@@ -46,7 +47,7 @@ class CategoryService //: IContext_service
         return 1;
     }
 
-    public CategoryDomain? Get(int param)
+    public Category? Get(int param)
     {
         return Context.Categories.Find(param);
     }
@@ -60,19 +61,19 @@ class CategoryService //: IContext_service
 
     }
 
-    public void Save(CategoryDomain param)
+    public void Save(Category param)
     {
         Context.Categories.Add(param);
         Context.SaveChanges();
     }
 
-    public void Update(CategoryDomain param)
+    public void Update(Category param)
     {
         Context.Categories.Update(param);
         Context.SaveChanges();
     }
 
-    public bool safe_delete(CategoryDomain param)
+    public bool safe_delete(Category param)
     {
         if (param.disabled)
         {

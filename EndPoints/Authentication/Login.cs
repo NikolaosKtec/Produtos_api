@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Produtos_api.Service.EmployeeIdentity;
 using Produtos_api.Service.security;
 
@@ -12,22 +14,20 @@ public class Login
 
     public static Delegate Handle => Action;
 
-
-    public static IResult Action(UserDto userDto,EmployeeService employeeService, IConfiguration configuration)
+[AllowAnonymous]
+    public static IResult Action(UserRequest userRequest,EmployeeService employeeService, IConfiguration configuration)
     {
        
-        var user = employeeService.find_user_by_email(userDto.Email);
+        if(!employeeService.ValidateUserByLogin(userRequest))
+            return Results.BadRequest( "email ou senha incoretos!");
+        
+        
+        // if user exist and password ok
+        var token_provider = new TokenService(userRequest.email,
+        employeeService.ShowIdCurrentUser(),
+        configuration);
 
-        if(user is null)
-            return Results.BadRequest();
-
-        if(! employeeService.check_password(user,userDto.Password))
-            return Results.BadRequest();
-
-        //if user exist and password ok
-        var token_provider = new TokenService(userDto.Email,configuration);
-
-        SecurityToken token = token_provider.create_token();
+        SecurityToken token = token_provider.Create_token();
 
         return Results.Ok(token_provider.write_token(token));
     }

@@ -17,7 +17,7 @@ class EmployeePost
       
 
         //user ok?
-        IEnumerable < IdentityError >? resultUser = employeeService.saveEmployee(user, employeeRequest);
+        IEnumerable < IdentityError >? resultUser = employeeService.SaveEmployee(user, employeeRequest);
 
         if(!(resultUser is null))
         {
@@ -25,7 +25,7 @@ class EmployeePost
         }
         //claim user ok?
         IEnumerable<IdentityError>? resultClaim =
-            employeeService.addNameAndEmail(user, employeeRequest.employee_code, employeeRequest.name);
+            employeeService.AddNameAndEmail(user, employeeRequest.employee_code, employeeRequest.name);
 
         if (!(resultClaim is null))
         {

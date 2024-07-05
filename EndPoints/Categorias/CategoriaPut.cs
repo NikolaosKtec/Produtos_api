@@ -3,7 +3,8 @@ using Flunt.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Produtos_api.Domain.Products;
-using Produtos_api.Service.Category;
+using Produtos_api.EndPoints.Categorias.dto;
+using Produtos_api.Service.Category_service;
 
 namespace Produtos_api.EndPoints.Categorias;
 
@@ -15,24 +16,24 @@ class CategoriaPut
     [Authorize]
     static IResult Action([FromRoute]int id,CategoryDto categoriaDto,CategoryService service)
     {
-        CategoryDomain categoria = service.Get(id);
+        Category? categoria = service.Get(id);
         
 
         if (categoria is null)
         {
             return Results.NotFound();
         }
-        else
-        {
-            if (categoriaDto.Name.Length < 1)
-            {
-                categoria.define(categoriaDto.set_activity);
-            }
-            else {
-                categoria.define(categoriaDto.Name, categoriaDto.set_activity);
-            }
+        
+        
+        // if (categoriaDto.Name.Equals(null) || categoriaDto.Name.Length <=3)
+        // {
+        //     return Results.BadRequest("parametros sao invalidos!");
+        // }
+        // else {
+            categoria.Set(categoriaDto.Name, categoriaDto.set_activity);
+        // }
 
-        }
+        
 
     
         if (!categoria.IsValid)

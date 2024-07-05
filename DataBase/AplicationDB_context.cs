@@ -11,7 +11,7 @@ namespace Produtos_api.DataBase;
 public class AplicationDB_context : IdentityDbContext<IdentityUser>
 {
     public DbSet<Product> Products { get; set; }
-    public DbSet<CategoryDomain> Categories { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     protected readonly IConfiguration Configuration;
 
@@ -28,14 +28,14 @@ public class AplicationDB_context : IdentityDbContext<IdentityUser>
         modelBuilder.Ignore<Notification>();
 
         var product = modelBuilder.Entity<Product>();
-        var categories = modelBuilder.Entity<CategoryDomain>();
+        var categories = modelBuilder.Entity<Category>();
 
         product.Property(p => p.Description)
             .HasMaxLength(255);
         product.Property(product => product.Name)
             .IsRequired();
         categories.Property(p => p.Id).UseSerialColumn();
-        modelBuilder.Entity<CategoryDomain>().Property(c => c.name).IsRequired();
+        modelBuilder.Entity<Category>().Property(c => c.name).IsRequired();
 
         
     }
@@ -50,8 +50,11 @@ public class AplicationDB_context : IdentityDbContext<IdentityUser>
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseNpgsql(Environment
-            .GetEnvironmentVariable(Configuration["ConnectionStrings:PostgreSql"]) );
+        // TODO note que o padrão de string de conecção é:
+        // Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase
+        // e não URL!
+        options.UseNpgsql(
+            Environment.GetEnvironmentVariable(Configuration["ConnectionStrings:PostgreSql"]) );
         options.UseNpgsql().EnableSensitiveDataLogging();
 
 

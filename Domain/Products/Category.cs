@@ -3,9 +3,9 @@ using Produtos_api.Domain.Generic;
 
 namespace Produtos_api.Domain.Products;
 
-public class CategoryDomain : Entity
+public class Category : Entity
 {
-    public CategoryDomain(string name) {
+    public Category(string name) {
         Validate(name);
 
         this.name = name;
@@ -17,34 +17,20 @@ public class CategoryDomain : Entity
         EditedOn = DateTime.UtcNow;
     }
 
-    public string? name { get; private set;}
+    public string name { get; private set;}
 
     public bool is_active { get; private set; }
 
     public bool disabled { get; private set; } = false;
 
-    public void define (string name, bool conv)//(string name , bool is_active)
+    public void Set (string name, bool activity)//(string name , bool is_active)
     {
         
-
-        if (conv)
-        {
-            is_active = !is_active;
-        }
-
         this.name = name;
+        this.is_active = activity;
         Validate(name);
     }
 
-    public void define(bool conv)//(string name , bool is_active)
-    {   
-       
-
-        if (conv)
-            is_active = !is_active;
-
-       // Validate(this.name);
-    }
 
     public void set_invalidate()
     {
@@ -54,9 +40,9 @@ public class CategoryDomain : Entity
     private void Validate(string name)
     {
         //validation flunt
-        var contract = new Contract<CategoryDomain>()
+        var contract = new Contract<Category>()
             .IsNotNullOrEmpty(name, "Name")
-            .IsGreaterOrEqualsThan(name, 3, "Name");
+            .IsGreaterOrEqualsThan(name, 4, "Name");
         AddNotifications(contract);
     }
 }

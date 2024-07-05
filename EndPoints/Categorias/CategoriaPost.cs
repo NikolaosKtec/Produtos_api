@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Produtos_api.Domain.Products;
-using Produtos_api.Service.Category;
+using Produtos_api.EndPoints.Categorias.dto;
+using Produtos_api.Service.Category_service;
 
 namespace Produtos_api.EndPoints.Categorias;
 class CategotiaPost
@@ -9,10 +10,10 @@ class CategotiaPost
     public static string[] Methods => new string[] {HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
     [Authorize]
-    public static IResult Action(CategoryDto categoriaDto, CategoryService service)
+    public static IResult Action(CategoryRequest request, CategoryService service)
     {
 
-        CategoryDomain categoria = new CategoryDomain(categoriaDto.Name);
+        Category categoria = new Category(request.name);
         
         
         
@@ -22,7 +23,7 @@ class CategotiaPost
        }
 
         service.Save(categoria);
-        return Results.Created($"/categorias/{categoriaDto.Name}",categoriaDto.Name);
+        return Results.Created($"/categorias/{request.name}",request.name);
     }
     
 }

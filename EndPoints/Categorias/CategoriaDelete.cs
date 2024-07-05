@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Produtos_api.Domain.Products;
-using Produtos_api.Service.Category;
+using Produtos_api.Service.Category_service;
 
 namespace Produtos_api.EndPoints.Categorias;
 class CategoriaDelete
@@ -14,7 +14,7 @@ class CategoriaDelete
     public static IResult Action([FromRoute]int id,CategoryService service)
     {
         
-        CategoryDomain? categoria =  service.Get(id);
+        Category? categoria =  service.Get(id);
 
         if(categoria is null){
             return Results.NoContent();

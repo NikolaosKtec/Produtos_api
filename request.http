@@ -1,0 +1,55 @@
+
+@name_new = "novo"
+@name = "editado"
+@active = "false"
+### get categorias <<<<<<<<<<<>>>>>>>>>>>
+GET http://localhost:8080/categorias
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pa29sYW9zZjFkYXNrYWxha2lzQGdtYWlsLmNvbSIsIm5iZiI6MTcxOTkyNDYyOSwiZXhwIjoxNzE5OTI4MjI5LCJpYXQiOjE3MTk5MjQ2MjksImlzcyI6IlByb2R1dG9zX2FwaSIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcxMjgvIn0.T5hwbACwnDAW2vyj5rOcXhDtSXeefaYl3eHiV544j9s
+### get empregados <<<<<<<<<<<>>>>>>>>>>>
+GET http://localhost:8080/employees?page=1
+### get produtos <<<<<<<<<<>>>>>>>>>>
+
+
+### post categoria
+POST http://localhost:8080/categorias HTTP/2.0
+Content-Type: application/json
+
+
+    {
+    "name": "material contrucao"
+    
+    }
+### post empregados
+@email = "nikolaosf1daskalakis@gmail.com"
+@password = "P@ssword1"
+@name = "nikolaos ferreira daskalakis"
+@employee_code = "I40sxs"
+
+POST http://localhost:8080/employees HTTP/2.0
+Content-Type: application/json
+
+
+    {
+    "email": {{email}},
+    "password": {{password}},
+    "name": {{name}},
+    "employee_code": {{employee_code}}
+    }
+### login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email" : "nikolaosf1daskalakis@gmail.com",
+  "password" : "P@ssword1"
+}
+
+
+### put categoria
+PUT http://localhost:8080/categorias/1
+Content-Type: application/json
+
+{
+  "name": {{name}},
+  "set_activity": {{{active}}
+}

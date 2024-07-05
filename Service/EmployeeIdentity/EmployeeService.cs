@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Identity;
 using Npgsql;
+using Produtos_api.EndPoints.Authentication;
 using Produtos_api.EndPoints.Employees;
 using System.Security.Claims;
 
@@ -18,11 +19,9 @@ public class EmployeeService
         _userManager = userManager;
     }
     private readonly NpgsqlConnection _db;
-
-
     private readonly UserManager<IdentityUser> _userManager;
-
-    public IEnumerable<IdentityError>? saveEmployee(IdentityUser user, EmployeeRequest employeeRequest)
+    private string id_user = "";
+    public IEnumerable<IdentityError>? SaveEmployee(IdentityUser user, EmployeeRequest employeeRequest)
     {
 
         var resultUser = _userManager.CreateAsync(user, employeeRequest.password).Result;
@@ -34,7 +33,7 @@ public class EmployeeService
         return null;
     }
 
-    public IEnumerable<IdentityError>? addNameAndEmail(IdentityUser user, string employee_code, string employee_name)
+    public IEnumerable<IdentityError>? AddNameAndEmail(IdentityUser user, string employee_code, string employee_name)
     {
         var userClaims = new List<Claim>()
         {
@@ -67,14 +66,21 @@ public class EmployeeService
         );
         return employee.ToList();
     }
-
-    public IdentityUser find_user_by_email(string email)
-    {
-        return _userManager.FindByEmailAsync(email).Result;
+    // Use somente depois de o usuário for autenticado!!!
+    public string ShowIdCurrentUser(){
+        return id_user;
     }
-
-    public bool check_password(IdentityUser user, string password)
+    //Esse método verifica se o usuário existe, e o valida as credencias.
+    // Caso não exista retornará falso
+    public bool ValidateUserByLogin(UserRequest userRequest)
     {
-       return  _userManager.CheckPasswordAsync(user, password).Result;
+        var user = _userManager.FindByEmailAsync(userRequest.email).Result;
+        
+        if(user is null){
+            return false;
+        }
+        this.id_user = user.Id;
+        return  _userManager.CheckPasswordAsync(user, userRequest.password).Result;
+        
     }
 }
