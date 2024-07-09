@@ -14,9 +14,9 @@ class CategoriaPut
     public static string[] Methods => new string[] {HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
     [Authorize]
-    static IResult Action([FromRoute]int id,CategoryDto categoriaDto,CategoryService service)
+    static async Task<IResult> Action([FromRoute]int id,CategoryDto categoriaDto,CategoryService service)
     {
-        Category? categoria = service.Get(id);
+        Category? categoria = await service.Get(id);
         
 
         if (categoria is null)

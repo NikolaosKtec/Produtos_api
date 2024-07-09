@@ -14,7 +14,7 @@ public class TokenService
         var key = Encoding.ASCII.GetBytes(
             Environment.GetEnvironmentVariable(
             configuration["JwtBearerTokenSettings:Secret_key"]));
-         
+        
         TokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]

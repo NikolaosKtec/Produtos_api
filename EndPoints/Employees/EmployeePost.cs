@@ -10,24 +10,25 @@ class EmployeePost
     public static string[] Methods => new string[] {HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
     [Authorize]
-    public static IResult Action(EmployeeRequest employeeRequest, UserManager<IdentityUser> userManager, EmployeeService employeeService)
+    //Metodo asincrono para não bloquear tempo de uso na CPU!
+    public static async Task<IResult> Action(EmployeeRequest employeeRequest, UserManager<IdentityUser> userManager, EmployeeService employeeService)
     {
-
+         
        var user = new IdentityUser { UserName = employeeRequest.email, Email = employeeRequest.email };
       
 
         //user ok?
-        IEnumerable < IdentityError >? resultUser = employeeService.SaveEmployee(user, employeeRequest);
+        IEnumerable < IdentityError >? resultUser = await employeeService.SaveEmployee(user, employeeRequest);
 
-        if(!(resultUser is null))
+        if(resultUser is not null)
         {
                 return Results.ValidationProblem(resultUser.convertToProblemsDetails());
         }
         //claim user ok?
         IEnumerable<IdentityError>? resultClaim =
-            employeeService.AddNameAndEmail(user, employeeRequest.employee_code, employeeRequest.name);
+            await employeeService.AddNameAndEmail(user, employeeRequest.employee_code, employeeRequest.name);
 
-        if (!(resultClaim is null))
+        if (resultClaim is not null)
         {
             return Results.ValidationProblem(resultClaim.convertToProblemsDetails());
         }

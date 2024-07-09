@@ -15,10 +15,10 @@ public class Login
     public static Delegate Handle => Action;
 
 [AllowAnonymous]
-    public static IResult Action(UserRequest userRequest,EmployeeService employeeService, IConfiguration configuration)
+    public static async Task<IResult> Action(UserRequest userRequest,EmployeeService employeeService, IConfiguration configuration)
     {
-       
-        if(!employeeService.ValidateUserByLogin(userRequest))
+       //Metodo asincrono para não bloquear tempo de uso na CPU!
+        if(!await employeeService.ValidateUserByLogin(userRequest))
             return Results.BadRequest( "email ou senha incoretos!");
         
         
@@ -29,7 +29,8 @@ public class Login
 
         SecurityToken token = token_provider.Create_token();
 
-        return Results.Ok(token_provider.write_token(token));
+        return Results.Ok(new{
+             token = token_provider.write_token(token)});
     }
 
 

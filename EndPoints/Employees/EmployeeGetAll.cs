@@ -8,7 +8,7 @@ public class EmployeeGetAll
     public static string Template => "/employees";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
-    public static IResult Action(int page,UserManager<IdentityUser> userManager,EmployeeService employeeService,IConfiguration config)
+    public static async Task<IResult> Action(int page,UserManager<IdentityUser> userManager,EmployeeService employeeService,IConfiguration config)
     {
         
         
@@ -17,7 +17,7 @@ public class EmployeeGetAll
             return Results.BadRequest("Err! page nao pode ser negativo!");
         }
 
-        List<EmployeeDto> users = employeeService.GetAll_dapper(page);
+        List<EmployeeDto> users = await employeeService.GetAll_dapper(page);
 
         return Results.Ok(users);
     }

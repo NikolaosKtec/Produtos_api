@@ -35,21 +35,21 @@ class CategoryService //: IContext_service
         // Context.SaveChanges();
         return 1;
     }
-    public int Delete(int param)//todo verificar metodo
+    public async Task<int> Delete(int param)//todo verificar metodo
     {
-        Category? categoria = Get(param);
+        Category? categoria =  await Get(param);
 
         if (categoria is null)
             return 0;
 
         Context.Categories.Remove(categoria);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
         return 1;
     }
 
-    public Category? Get(int param)
+    public async Task<Category?> Get(int param)
     {
-        return Context.Categories.Find(param);
+        return await Context.Categories.FindAsync(param);
     }
 
     public IQueryable<CategoryDto> GetAll()
@@ -61,24 +61,24 @@ class CategoryService //: IContext_service
 
     }
 
-    public void Save(Category param)
+    public async void Save(Category param)
     {
-        Context.Categories.Add(param);
-        Context.SaveChanges();
+        await Context.Categories.AddAsync(param);
+        await Context.SaveChangesAsync();
     }
 
-    public void Update(Category param)
+    public async void Update(Category param)
     {
         Context.Categories.Update(param);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 
-    public bool safe_delete(Category param)
+    public async Task<bool> safe_delete(Category param)
     {
         if (param.disabled)
         {
             Context.Categories.Update(param);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return true;
         }
 

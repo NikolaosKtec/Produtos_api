@@ -21,10 +21,10 @@ public class EmployeeService
     private readonly NpgsqlConnection _db;
     private readonly UserManager<IdentityUser> _userManager;
     private string id_user = "";
-    public IEnumerable<IdentityError>? SaveEmployee(IdentityUser user, EmployeeRequest employeeRequest)
+    public async Task<IEnumerable<IdentityError>?> SaveEmployee(IdentityUser user, EmployeeRequest employeeRequest)
     {
 
-        var resultUser = _userManager.CreateAsync(user, employeeRequest.password).Result;
+        var resultUser = await _userManager.CreateAsync(user, employeeRequest.password);
 
 
         if (!resultUser.Succeeded)
@@ -33,7 +33,7 @@ public class EmployeeService
         return null;
     }
 
-    public IEnumerable<IdentityError>? AddNameAndEmail(IdentityUser user, string employee_code, string employee_name)
+    public async Task<IEnumerable<IdentityError>?> AddNameAndEmail(IdentityUser user, string employee_code, string employee_name)
     {
         var userClaims = new List<Claim>()
         {
@@ -41,7 +41,7 @@ public class EmployeeService
             new Claim("name_user", employee_name),
         };
 
-        var resultClaim = _userManager.AddClaimsAsync(user, userClaims).Result;
+        var resultClaim = await _userManager.AddClaimsAsync(user, userClaims);
 
         if (!resultClaim.Succeeded)
             return resultClaim.Errors;
@@ -49,18 +49,20 @@ public class EmployeeService
         return null;
     }
 
-    public List<EmployeeDto> GetAll_dapper(int page)
+    public async Task<List<EmployeeDto>> GetAll_dapper(int page)
     {
         const int ROWS = 10;
         const string QUERRY = @"
-                SELECT  ""ClaimValue"" as name, ""Email"" as email 
-                from ""AspNetUsers"" u inner join ""AspNetUserClaims"" c 
-                on u.""Id"" = c.""UserId"" and ""ClaimType"" = 'name_user'
-                ORDER BY name
-                OFFSET (@page -1)*@ROWS FETCH NEXT @ROWS ROWS ONLY
-                ";
+                 SELECT  ""ClaimValue"" AS name , ""Email"",(
+	        SELECT
+                ""ClaimValue"" as employee_code FROM ""AspNetUserClaims"" c  WHERE
+                c.""UserId"" = u.""Id"" AND ""ClaimType"" = 'employee_code') AS employee_code
+            FROM ""AspNetUsers"" u 
+            INNER JOIN ""AspNetUserClaims"" c ON u.""Id"" = c.""UserId"" 
+            AND ""ClaimType"" = 'name_user' 	ORDER BY name
+            ";
 
-        var employee = _db.Query<EmployeeDto>(
+        var employee =  await _db.QueryAsync<EmployeeDto>(
             QUERRY,
             new { page, ROWS }
         );
@@ -72,15 +74,15 @@ public class EmployeeService
     }
     //Esse método verifica se o usuário existe, e o valida as credencias.
     // Caso não exista retornará falso
-    public bool ValidateUserByLogin(UserRequest userRequest)
+    public async Task<bool> ValidateUserByLogin(UserRequest userRequest)
     {
-        var user = _userManager.FindByEmailAsync(userRequest.email).Result;
+        var user = await _userManager.FindByEmailAsync(userRequest.email);
         
         if(user is null){
             return false;
         }
         this.id_user = user.Id;
-        return  _userManager.CheckPasswordAsync(user, userRequest.password).Result;
+        return  await _userManager.CheckPasswordAsync(user, userRequest.password);
         
     }
 }

@@ -11,10 +11,10 @@ class CategoriaDelete
     public static string[] Methods => new string[] {HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
     [Authorize]
-    public static IResult Action([FromRoute]int id,CategoryService service)
+    public static async Task<IResult> Action([FromRoute]int id,CategoryService service)
     {
         
-        Category? categoria =  service.Get(id);
+        Category? categoria =  await service.Get(id);
 
         if(categoria is null){
             return Results.NoContent();
@@ -22,13 +22,13 @@ class CategoriaDelete
         // gatilho pode ser útil aqui
 
         categoria.set_invalidate();
-        bool is_ok  = service.safe_delete(categoria);
+        bool is_ok  = await service.safe_delete(categoria);
 
         if (!is_ok) {
             return Results.Problem("Tente novamente! ,essa categoria não foi foi desabilitada!");
         }
         
        // service.inactivate_childs(categoria);// todo aparenemente feito
-        return Results.Ok("Este agora encontra-se Inativo!");
+        return Results.Ok(new{satus="Este agora encontra-se Inativo!"});
     }
 }
