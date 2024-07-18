@@ -16,7 +16,7 @@ class CategoriaPut
     [Authorize]
     static async Task<IResult> Action([FromRoute]int id,CategoryDto categoriaDto,CategoryService service)
     {
-        Category? categoria = await service.Get(id);
+        Category? categoria = await service.GetAsync(id);
         
 
         if (categoria is null)
@@ -30,7 +30,7 @@ class CategoriaPut
         //     return Results.BadRequest("parametros sao invalidos!");
         // }
         // else {
-            categoria.Set(categoriaDto.Name, categoriaDto.set_activity);
+            categoria.Set(categoriaDto.Name, categoriaDto.Set_activity);
         // }
 
         
@@ -41,8 +41,8 @@ class CategoriaPut
                 return Results.ValidationProblem(categoria.Notifications.convertToProblemsDetails());
         }
 
-        service.Update(categoria);
-        return Results.Accepted("ok",(categoriaDto.Name, categoriaDto.set_activity));
+        await service.UpdateAsync(categoria);
+        return Results.Accepted("ok",(categoriaDto.Name, categoriaDto.Set_activity));
     }
 }
 
